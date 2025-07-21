@@ -15,6 +15,17 @@ class OrderController extends Controller
     public function index()
     {
         //
+        
+        $query = Order::with(['product', 'user']);
+
+        if (!Auth::user()->is_admin) {
+            $query->where('user_id', Auth::user()->id);
+        }
+
+        $orders = $query->paginate(10);
+        
+
+        return view('orders.index', compact('orders'));
     }
 
     /**

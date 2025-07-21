@@ -20,4 +20,9 @@ class Product extends Model
         'AddedBy',
     ];
 
+
+      public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

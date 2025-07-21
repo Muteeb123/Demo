@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OrderController;
 use App\Http\Middleware\Admin;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/products/{product}/order', [ProductController::class, 'order'])->name('products.Order');
     Route::post('/products/{product}/PlaceOrder', [ProductController::class, 'PlaceOrder'])->name('products.PlaceOrder');
+    Route::resource('/orders', OrderController::class);
 });
 
 require __DIR__.'/auth.php';

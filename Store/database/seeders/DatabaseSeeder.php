@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use App\Models\User;
+
+use App\Models\Order;
 use Illuminate\Container\Attributes\DB;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,6 +22,6 @@ class DatabaseSeeder extends Seeder
         
         
     //    FacadesDB::table('products')->truncate();
-        Product::factory(500)->create();
+      //  Order::factory(100)->create();
     }
 }
