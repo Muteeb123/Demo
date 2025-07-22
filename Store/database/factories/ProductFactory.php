@@ -35,7 +35,8 @@ class ProductFactory extends Factory
             'stock' => fake()->numberBetween(1, 100),
             'image' => static::$images ? fake()->randomElement(static::$images) : null,
             'is_active' => true,
-            'AddedBy' => \App\Models\User::factory()
+            'AddedBy' => \App\Models\User::factory(),
+            'created_at' => now()->subDays(rand(1, 365)),
         ];
     }
 }

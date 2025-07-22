@@ -22,6 +22,6 @@ class DatabaseSeeder extends Seeder
         
         
     //    FacadesDB::table('products')->truncate();
-      //  Order::factory(100)->create();
+        Product::factory(100)->create();
     }
 }
