@@ -57,6 +57,8 @@
         <option value="name_desc" {{ request('sortby') === 'name_desc' ? 'selected' : '' }}>Name (Z-A)</option>
         <option value="price_asc" {{ request('sortby') === 'price_asc' ? 'selected' : '' }}>Price (Low to High)</option>
         <option value="price_desc" {{ request('sortby') === 'price_desc' ? 'selected' : '' }}>Price (High to Low)</option>
+        <option value="quantity_asc" {{ request('sortby') === 'quantity_asc' ? 'selected' : '' }}>Quantity (Low to High)</option>
+        <option value="quantity_desc" {{ request('sortby') === 'quantity_desc' ? 'selected' : '' }}>Quantity (High to Low)</option>
         </select>
 
             <button type="submit"

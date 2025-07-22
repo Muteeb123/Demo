@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
+use App\Models\UserDetails;
 
 class ProductController extends Controller
 {
@@ -58,11 +59,12 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:1',
-            'stock' => 'required|integer|min:1',
+            'stock' => 'required|integer|min:0',
             'is_active' => 'required|boolean',
             'image' => 'nullable|url|max:255', 
         ]);
@@ -76,6 +78,8 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+
+        
         return redirect()->route('dashboard')->with('success', 'Product deleted successfully.');
     }
 
@@ -95,19 +99,19 @@ class ProductController extends Controller
 
     if ($request->has('sortby')) {
     $sortBy = $request->sortby;
-    $sortOrder = $request->get('sort_order', 'asc'); // default to asc
-
     $sortMap = [
         'name_asc' => ['name', 'asc'],
         'name_desc' => ['name', 'desc'],
         'price_asc' => ['price', 'asc'],
         'price_desc' => ['price', 'desc'],
+        'quantity_asc'=>['stock','asc'],
+        'quantity_desc' => ['stock','desc']
     ];
 
     if (isset($sortMap[$sortBy])) {
         $query->orderBy($sortMap[$sortBy][0], $sortMap[$sortBy][1]);
     } else {
-        $query->latest(); // default fallback
+        $query->latest(); 
     }
 }
 
@@ -153,9 +157,16 @@ class ProductController extends Controller
 
     public function Order(Product $product)
     {
-        
-        return view('products.order', compact('product'));
-  
+
+
+    $userid = Auth::id();
+    $userdetails = UserDetails::where('user_id', $userid)->first();
+
+    return view('products.order', [
+        'product' => $product,
+        'userdetails' => $userdetails,
+    ]);
+
     }
 
     public function placeOrder(Request $request, Product $product)
@@ -177,19 +188,23 @@ class ProductController extends Controller
         if (!$details) {
             return redirect()->back()->withErrors(['error' => 'Failed to save user details.']);
         }
+
+        $newStock = $product->stock - $request->quantity;
+        if ($newStock < 0) {
+            return redirect()->back()->withErrors(['error' => 'Not enough stock available.']);
+        }
         
         $OrderContrloller = new OrderController();
-        $orderResult = $OrderContrloller->store($request , $product);
+        $orderController = new OrderController();
+        $orderResult = $orderController->store($request, $product);
         if (!$orderResult) {
             return redirect()->back()->withErrors(['error' => 'Failed to place order.']);
         }
-        // // Assuming the order was placed successfully
-        // // You can redirect to a success page or show a success message
+        
+        
+        $product->stock = $newStock;
+        $product->save();
         return redirect()->route('products.index')->with('success', 'Order placed successfully.');
-
-
-
-        // Here you would typically handle the order logic, such as saving to the database or processing payment.
 
         
     }

@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/products/{product}/order', [ProductController::class, 'order'])->name('products.Order');
     Route::post('/products/{product}/PlaceOrder', [ProductController::class, 'PlaceOrder'])->name('products.PlaceOrder');
-    Route::resource('/orders', OrderController::class);
+    Route::resource('orders', OrderController::class)->names('orders');
 });
 
 require __DIR__.'/auth.php';

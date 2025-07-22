@@ -4,11 +4,11 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                {{-- <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
-                </div>
+                </div> --}}
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -60,10 +60,18 @@
                 </div>
             @else
                 <!-- Guest Buttons -->
-                <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
-                    <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-300 hover:underline">Login</a>
-                    <a href="{{ route('register') }}" class="text-sm text-gray-700 dark:text-gray-300 hover:underline">Sign Up</a>
-                </div>
+               <div class="hidden sm:flex sm:items-center sm:ms-6 space-x-4">
+    <a href="{{ route('login') }}"
+       class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition">
+        Login
+    </a>
+
+    <a href="{{ route('register') }}"
+       class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow-sm transition">
+        Sign Up
+    </a>
+</div>
+
             @endauth
 
             <!-- Hamburger -->
